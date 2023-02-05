@@ -1,10 +1,5 @@
 ---
 title: 'test'
-date: '2023-02-02'
+date: '2023-02-06'
 ---
-hihihihi
-
-
-```
-const hi = 'hello'
-```
+test

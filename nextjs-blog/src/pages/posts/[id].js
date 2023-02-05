@@ -27,7 +27,8 @@ export async function getStaticPaths() {
 }
 
 // getStaticProps : 빌드 시, 화면을 그린다.,  빌드시 데이터 조회부분에서 에러가 난다.
-export async function getStaticProps({ params }) {
+export async function getStaticProps({ params, preview }) {
+  console.log('>>>>>>>>>>>>>>>>>', preview);
   const postData = await getPostData(params.id);
   return {
     props: {
