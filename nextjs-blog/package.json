@@ -3,6 +3,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "next-sitemap",
     "start": "next start"
   },
   "dependencies": {
@@ -11,10 +12,11 @@
     "gray-matter": "^4.0.3",
     "next": "latest",
     "next-compose-plugins": "^2.2.1",
+    "next-mdx-remote": "^4.3.0",
     "next-optimized-images": "^2.6.2",
-    "prettier": "^2.8.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-syntax-highlighter": "^15.5.0",
     "remark": "^14.0.2",
     "remark-html": "^15.0.1"
   },
@@ -22,5 +24,16 @@
   "version": "1.0.0",
   "main": "index.js",
   "author": "DESKTOP-31A4NAD\\MIH <kanghr@mih.co.kr>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@next/eslint-plugin-next": "^13.1.6",
+    "autoprefixer": "^10.4.13",
+    "eslint": "^8.33.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-tailwindcss": "^3.8.3",
+    "next-sitemap": "^3.1.49",
+    "postcss": "^8.4.21",
+    "prettier": "2.8.3",
+    "tailwindcss": "^3.2.4"
+  }
 }

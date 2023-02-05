@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://kaaaaaang-blog-wow.vercel.app
+
+# Sitemaps
+Sitemap: https://kaaaaaang-blog-wow.vercel.app/sitemap.xml
