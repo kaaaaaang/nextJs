@@ -6,6 +6,7 @@ import Date from '../../components/date';
 import utilStyles from '../../../styles/utils.module.css';
 import { useRouter } from 'next/router';
 import CodeBlock from '../../components/CodeBlock';
+import dynamic from 'next/dynamic';
 
 // fallback: true
 // 빌드시, 조회했을때는 없었는데 getStaticProps으로 조회했을떄는 있을 수 있다.
@@ -37,16 +38,11 @@ export async function getStaticProps({ params, preview }) {
   };
 }
 
-const Button = ({ children }) => {
-  return (
-    <button
-      className="bg-black dark:bg-white text-lg text-teal-200 dark:text-teal-700 rounded-lg px-5"
-      onClick={() => alert('Hello')}
-    >
-      {children}
-    </button>
-  );
-};
+// dynamic 부분 서버단에서 pre렌더링 하지 않고 클라이언트 단에서 렌더링
+const Button = dynamic(() => import('../../components/Button.js'), {
+  ssr: false,
+  loading: () => <div>Loading...</div>,
+});
 
 const components = { Button, CodeBlock };
 
