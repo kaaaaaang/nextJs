@@ -1,9 +1,9 @@
 import Head from 'next/head';
-import Layout, { siteTitle } from '../components/Layout';
 import utilStyles from '../../styles/utils.module.css';
 import Link from 'next/link';
-import Date from '../components/date';
 import { getSortedPostsData } from '../../lib/posts';
+import Date from '@/components/date';
+import { siteTitle } from './_document';
 
 // getStaticProps : 빌드 시, 화면을 그린다.,  빌드시 데이터 조회부분에서 에러가 난다.
 export async function getStaticProps() {
@@ -37,7 +37,7 @@ export default function Home({ allPostsData }) {
   //     .then((data) => setAllPostsData(data.allPostsData));
   // }, []);
   return (
-    <Layout home>
+    <>
       <Head>
         {' '}
         F<title>{siteTitle}</title>
@@ -63,6 +63,6 @@ export default function Home({ allPostsData }) {
           ))}
         </ul>
       </section>
-    </Layout>
+    </>
   );
 }

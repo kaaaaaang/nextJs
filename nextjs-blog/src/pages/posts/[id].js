@@ -1,12 +1,13 @@
 import React from 'react';
 import { MDXRemote } from 'next-mdx-remote';
-import Layout from '../../components/Layout';
 import { getAllPostIds, getPostData } from '../../../lib/posts';
-import Date from '../../components/date';
 import utilStyles from '../../../styles/utils.module.css';
 import { useRouter } from 'next/router';
-import CodeBlock from '../../components/CodeBlock';
 import dynamic from 'next/dynamic';
+import Date from '@/components/date';
+import CodeBlock from '@/components/CodeBlock';
+import Head from 'next/head';
+import { siteTitle } from '../_document';
 
 // fallback: true
 // 빌드시, 조회했을때는 없었는데 getStaticProps으로 조회했을떄는 있을 수 있다.
@@ -39,14 +40,14 @@ export async function getStaticProps({ params, preview }) {
 }
 
 // dynamic 부분 서버단에서 pre렌더링 하지 않고 클라이언트 단에서 렌더링
-const Button = dynamic(() => import('../../components/Button.js'), {
+const Button = dynamic(() => import('../../../components/Button'), {
   ssr: false,
   loading: () => <div>Loading...</div>,
 });
 
 const components = { Button, CodeBlock };
 
-const Post = ({ postData }) => {
+const Post = ({ postData, pathname }) => {
   console.log(postData);
   const router = useRouter();
 
@@ -54,8 +55,12 @@ const Post = ({ postData }) => {
     return <div>Loading ...</div>;
   }
   return (
-    <Layout>
+    <>
+      <Head>
+        <title>{`${postData.title} - ${siteTitle}`}</title>
+      </Head>
       <article>
+        <h2>pathname: {pathname}</h2>
         <h1 className={utilStyles.headingXl}>{postData.title}</h1>
         <div className={utilStyles.lightText}>
           <Date dateString={postData.date} />
@@ -63,7 +68,7 @@ const Post = ({ postData }) => {
         {postData.contentHtml && <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />}
         {postData.mdxSource && <MDXRemote {...postData.mdxSource} components={components} />}
       </article>
-    </Layout>
+    </>
   );
 };
 

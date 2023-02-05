@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
-import Layout from '../../components/Layout';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 // 빌드 후
 // .next/server/post 경로에서
@@ -25,7 +25,7 @@ const Write = () => {
   const contentRef = useRef(undefined);
   const [showLink, setShowLink] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSumbit = (e) => {
     e.preventDefault();
 
     const id = idRef.current.value;
@@ -56,21 +56,75 @@ const Write = () => {
   };
 
   return (
-    <Layout>
-      <h1>wirte a post</h1>
-      <form onSubmit={handleSubmit}>
+    <>
+      <Head>
+        <title>Write a post</title>
+        <meta property="og:title" content="My page title" key="title" />
+      </Head>
+      <h1>Write a post</h1>
+      <form onSubmit={handleSumbit}>
         <input type="text" name="id" placeholder="id" required ref={idRef} />
+        <br />
         <br />
         <input type="text" name="title" placeholder="title" required ref={titleRef} />
         <br />
+        <br />
         <textarea type="text" name="content" placeholder="content" required ref={contentRef} />
         <br />
-        <input type="submit" value="Create" />
+        <input className="rounded bg-pink-500 px-2" type="submit" value="Create" />
       </form>
-      {showLink && <Link href={`/posts/${idRef.current.value}`}>Created Post</Link>}
-    </Layout>
+      {showLink && (
+        <Link href={`/posts/${idRef.current.value}`}>
+          <a>Created Post</a>
+        </Link>
+      )}
+      <br />
+      <br />
+      <button
+        onClick={() =>
+          // router.push('/posts/[id]', '/posts/ssg-ssr', { scroll: false })
+          router.push({ pathname: '/posts/[id]', query: { id: 'ssg-ssr' } })
+        }
+        className="rounded bg-pink-200 px-2"
+      >
+        router.push
+      </button>
+      <br />
+      <br />
+      <button onClick={() => router.replace('/posts/ssg-ssr')} className="rounded bg-pink-200 px-2">
+        router.replace
+      </button>
+      <br />
+      <br />
+      <button onClick={() => router.back()} className="rounded bg-pink-200 px-2">
+        router.back
+      </button>
+      <br />
+      <br />
+      <button onClick={() => router.reload()} className="rounded bg-pink-200 px-2">
+        router.reload
+      </button>
+      <br />
+      <br />
+      <Link href="/posts/ssg-ssr" passHref>
+        <LinkButton />
+      </Link>
+      <br />
+      <br />
+      <Link href="/posts/ssg-ssr" replace scroll={false}>
+        <a>가즈아</a>
+      </Link>
+    </>
   );
 };
+
+const LinkButton = forwardRef(function Button({ href }, ref) {
+  return (
+    <a href={href} ref={ref}>
+      {href} 로
+    </a>
+  );
+});
 
 export default Write;
 
