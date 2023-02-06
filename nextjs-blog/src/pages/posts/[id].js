@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MDXRemote } from 'next-mdx-remote';
 import { getAllPostIds, getPostData } from '../../../lib/posts';
 import utilStyles from '../../../styles/utils.module.css';
@@ -47,6 +47,20 @@ const Button = dynamic(() => import('../../../components/Button'), {
 
 const components = { Button, CodeBlock };
 
+const ErrorComponent = () => {
+  const [error, setError] = useState(false);
+
+  if (error) {
+    throw new Error('Error occured');
+  }
+
+  return (
+    <button className="rounded px-2 bg-green-500" onClick={() => setError(true)}>
+      Error Fire
+    </button>
+  );
+};
+
 const Post = ({ postData, pathname }) => {
   console.log(postData);
   const router = useRouter();
@@ -59,6 +73,7 @@ const Post = ({ postData, pathname }) => {
       <Head>
         <title>{`${postData.title} - ${siteTitle}`}</title>
       </Head>
+      <ErrorComponent />
       <article>
         <h2>pathname: {pathname}</h2>
         <h1 className={utilStyles.headingXl}>{postData.title}</h1>
