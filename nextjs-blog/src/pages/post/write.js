@@ -1,7 +1,16 @@
-import React, { forwardRef, useEffect, useRef, useState } from 'react';
+/* eslint-disable no-undef */
+import { forwardRef, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import getConfig from 'next/config';
+
+// Only holds serverRuntimeConfig and publicRuntimeConfig
+const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
+// Will only be available on the server-side
+console.log(serverRuntimeConfig.mySecret);
+// Will be available on both server-side and client-side
+console.log(publicRuntimeConfig.staticFolder);
 
 // 빌드 후
 // .next/server/post 경로에서
@@ -10,11 +19,18 @@ import Head from 'next/head';
 // export async function getServerSideProps() {
 //   return {};
 // }
-const Write = () => {
+export default function Write() {
   // router 의 query
   // client0side 페이지의 경우,
   // hydration 이후에 query 값을 읽을 수 있다.
   const router = useRouter();
+
+  useEffect(() => {
+    if (router.isReady) {
+      console.log('isReady', JSON.stringify(router));
+    }
+    router.prefetch('/posts/ssg-ssr');
+  }, [router]);
 
   useEffect(() => {
     console.log(router.query);
@@ -61,7 +77,7 @@ const Write = () => {
         <title>Write a post</title>
         <meta property="og:title" content="My page title" key="title" />
       </Head>
-      <h1>Write a post</h1>
+      <h1>Write a post {process.env.customKey}</h1>
       <form onSubmit={handleSumbit}>
         <input type="text" name="id" placeholder="id" required ref={idRef} />
         <br />
@@ -73,11 +89,7 @@ const Write = () => {
         <br />
         <input className="rounded bg-pink-500 px-2" type="submit" value="Create" />
       </form>
-      {showLink && (
-        <Link href={`/posts/${idRef.current.value}`}>
-          <a>Created Post</a>
-        </Link>
-      )}
+      {showLink && <Link href={`/posts/${idRef.current.value}`}>Created Post</Link>}
       <br />
       <br />
       <button
@@ -112,21 +124,16 @@ const Write = () => {
       <br />
       <br />
       <Link href="/posts/ssg-ssr" replace scroll={false}>
-        <a>가즈아</a>
+        가즈아
       </Link>
     </>
   );
-};
+}
 
-const LinkButton = forwardRef(function Button({ href }, ref) {
-  return (
-    <a href={href} ref={ref}>
-      {href} 로
-    </a>
-  );
+const LinkButton = forwardRef(function Button(props, ref) {
+  console.log('linked', props);
+  return <p ref={ref}>{props?.href} 로</p>;
 });
-
-export default Write;
 
 // 요새는 별로 추천하지 않지만
 // getserever ~ 나 getstat~~~~~~~~~~ 나오기 전에 자주 쓰임

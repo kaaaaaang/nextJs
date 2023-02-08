@@ -7,7 +7,7 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 
 export function reportWebVitals(metric) {
   if (metric.label === 'custom') {
-    console.log(metric);
+    console.log('web vitals', metric);
   }
 }
 

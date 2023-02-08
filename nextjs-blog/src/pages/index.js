@@ -40,7 +40,7 @@ export default function Home({ allPostsData }) {
     <>
       <Head>
         {' '}
-        F<title>{siteTitle}</title>
+        <title>{siteTitle}</title>
       </Head>
       <section className={utilStyles.headingMd}>
         <p>[Your Self Introduction]</p>
